@@ -22,7 +22,11 @@ bot.onText(/\/moxfield (.+)/, (msg, match) => {
 				moxfieldResponse
 			)
 
-			bot.sendMessage(chatId, queryDecklist)
+			const pretty = queryDecklist.map(combo => combo.cards).reduce((acc, combo) => {
+				return `${acc} - ${combo.join(', ')} \n`
+			}, "")
+
+			bot.sendMessage(chatId, `${queryDecklist.length} combos found: \n${pretty}`)
 		
 		})
 	})
@@ -37,6 +41,27 @@ app.get('/moxfield/:moxfieldId', async (req, res) => {
   )
   
   res.json(queryDecklist)
+})
+
+app.get('/moxpretty/:moxfieldId', async (req, res) => {
+  
+	parseCommanderSpellbook().then(commanderSpellbookResponse => {
+		
+		parseMoxfield(req.params.moxfieldId).then(moxfieldResponse => {
+
+			const queryDecklist = searchCombos(
+				commanderSpellbookResponse,
+				moxfieldResponse
+			)
+
+			const pretty = queryDecklist.map(combo => combo.cards).reduce((acc, combo) => {
+				return `${acc} - ${combo.join(', ')} \n`
+			}, "")
+
+			res.send(`${queryDecklist.length} combos found: \n${pretty}`)
+		
+		})
+	})  
 })
 
 app.listen(port, () => {
