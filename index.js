@@ -9,7 +9,7 @@ const app = express()
 const port = process.env.PORT || 3000;
 const bot = new telegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
-bot.onText(/\/combomox (.+)/, (msg, match) => {
+bot.onText(/\/combomoxlegacy (.+)/, (msg, match) => {
 	const moxfieldId = match[1];
 	const chatId = msg.chat.id;
 
@@ -32,7 +32,7 @@ bot.onText(/\/combomox (.+)/, (msg, match) => {
 	})
 })
 
-bot.onText(/\/combomoxbeta (.+)/, (msg, match) => {
+bot.onText(/\/combomox (.+)/, (msg, match) => {
 	const moxfieldId = match[1];
 	const chatId = msg.chat.id;
 
@@ -44,10 +44,6 @@ bot.onText(/\/combomoxbeta (.+)/, (msg, match) => {
 				commanderSpellbookResponse,
 				moxfieldResponse
 			)
-
-			// const pretty = queryDecklist.map(combo => combo.cards).reduce((acc, combo) => {
-			// 	return `${acc} - ${combo.join(', ')} \n`
-			// }, "")
 
 			const pretty = queryDecklist.reduce((acc, combo) => {
 				return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`
