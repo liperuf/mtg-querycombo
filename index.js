@@ -53,7 +53,14 @@ bot.onText(/\/combomoxbeta (.+)/, (msg, match) => {
 				return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`
 			}, "")
 
-			bot.sendMessage(chatId, `${queryDecklist.length} combos found: \n${pretty}`, { parse_mode: 'HTML' })
+			bot.sendMessage(
+				chatId, 
+				`${queryDecklist.length} combos found: \n${pretty}`,
+				{ 
+					parse_mode: 'HTML',
+					disable_web_page_preview: true
+				}
+			)
 		
 		})
 	})
