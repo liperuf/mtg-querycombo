@@ -1,4 +1,5 @@
-import express from 'express'
+import express from 'express';
+import telegramBot from 'node-telegram-bot-api';
 
 import parseMoxfield from './parseMoxfield.js';
 import parseCommanderSpellbook from './parseCommanderSpellbook.js';
@@ -6,6 +7,20 @@ import searchCombos from './searchCombos.js';
 
 const app = express()
 const port = process.env.PORT || 3000;
+const bot = new telegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
+
+bot.onText(/\/moxfield (.+)/, (msg, match) => {
+	const moxfieldId = match[1];
+	const chatId = msg.chat.id;
+
+	const queryDecklist = searchCombos(
+		await parseCommanderSpellbook(),
+		await parseMoxfield(moxfieldId)
+	)
+
+	bot.sendMessage(chatId, queryDecklist)
+})
+
 
 app.get('/moxfield/:moxfieldId', async (req, res) => {
   
@@ -17,15 +32,6 @@ app.get('/moxfield/:moxfieldId', async (req, res) => {
   res.json(queryDecklist)
 })
 
-
-
-// app.get('/podcastPlays', async (req, res) => {
-  
-//   console.log("[index]: Starting podcastPlays routine!");
-  
-//   res.send(await podcastPlays())
-// })
-
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Server is listening at port: ${port}`)
 })
