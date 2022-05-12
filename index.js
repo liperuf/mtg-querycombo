@@ -9,6 +9,14 @@ const app = express()
 const port = process.env.PORT || 3000;
 const bot = new telegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
+app.all('*', function(req, res, next) {
+     var origin = req.get('origin'); 
+     res.header('Access-Control-Allow-Origin', origin);
+     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+     res.header('Access-Control-Allow-Headers', 'Content-Type');
+     next();
+});
+
 bot.onText(/\/combomoxlegacy (.+)/, (msg, match) => {
 	const moxfieldId = match[1];
 	const chatId = msg.chat.id;
