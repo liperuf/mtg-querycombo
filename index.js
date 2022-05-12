@@ -32,6 +32,33 @@ bot.onText(/\/combomox (.+)/, (msg, match) => {
 	})
 })
 
+bot.onText(/\/combomox-beta (.+)/, (msg, match) => {
+	const moxfieldId = match[1];
+	const chatId = msg.chat.id;
+
+	parseCommanderSpellbook().then(commanderSpellbookResponse => {
+		
+		parseMoxfield(moxfieldId).then(moxfieldResponse => {
+
+			const queryDecklist = searchCombos(
+				commanderSpellbookResponse,
+				moxfieldResponse
+			)
+
+			// const pretty = queryDecklist.map(combo => combo.cards).reduce((acc, combo) => {
+			// 	return `${acc} - ${combo.join(', ')} \n`
+			// }, "")
+
+			const pretty = queryDecklist.reduce((acc, combo) => {
+				return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`
+			}, "")
+
+			bot.sendMessage(chatId, `${queryDecklist.length} combos found: \n${pretty}`)
+		
+		})
+	})
+})
+
 
 app.get('/moxfield/:moxfieldId', async (req, res) => {
   
