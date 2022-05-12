@@ -9,7 +9,7 @@ const app = express()
 const port = process.env.PORT || 3000;
 const bot = new telegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
-bot.onText(/\/moxfield (.+)/, (msg, match) => {
+bot.onText(/\/moxfield (.+)/, async (msg, match) => {
 	const moxfieldId = match[1];
 	const chatId = msg.chat.id;
 
