@@ -69,8 +69,12 @@ app.get('/moxfield/:moxfieldId', async (req, res) => {
     await parseCommanderSpellbook(),
     await parseMoxfield(req.params.moxfieldId),
   )
+
+  const json_output = {
+  	data: queryDecklist
+  }
   
-  res.json(queryDecklist)
+  res.json(json_output)
 })
 
 app.get('/moxpretty/:moxfieldId', async (req, res) => {
