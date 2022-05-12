@@ -9,16 +9,23 @@ const app = express()
 const port = process.env.PORT || 3000;
 const bot = new telegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
 
-bot.onText(/\/moxfield (.+)/, async (msg, match) => {
+bot.onText(/\/moxfield (.+)/, (msg, match) => {
 	const moxfieldId = match[1];
 	const chatId = msg.chat.id;
 
-	const queryDecklist = searchCombos(
-		await parseCommanderSpellbook(),
-		await parseMoxfield(moxfieldId)
-	)
+	parseCommanderSpellbook().then(commanderSpellbookResponse => {
+		
+		parseMoxfield(moxfieldId).then(moxfieldResponse => {
 
-	bot.sendMessage(chatId, queryDecklist)
+			const queryDecklist = searchCombos(
+				commanderSpellbookResponse,
+				moxfieldResponse
+			)
+
+			bot.sendMessage(chatId, queryDecklist)
+		
+		})
+	})
 })
 
 
