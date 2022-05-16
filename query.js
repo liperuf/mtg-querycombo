@@ -4,11 +4,22 @@ import parseMoxfield from './parseMoxfield.js';
 import parseCommanderSpellbook from './parseCommanderSpellbook.js';
 import searchCombos from './searchCombos.js';
 
-// const decklistReference = process.argv.slice(2)[0]
-
-
+const decklistReference = process.argv.slice(2)[0]
 
 async function main() {
+  const queryDecklist = searchCombos(
+    await parseCommanderSpellbook(),
+    await parseMoxfield(decklistReference),
+  )
+
+  console.log(queryDecklist);
+  console.log(queryDecklist.length);
+}
+
+
+main()
+
+async function cedhdb() {
 
   const commanderSpellbook = await parseCommanderSpellbook();
   const cedhdbFile = readFileSync('./cedhdb_12may.json');
@@ -44,6 +55,3 @@ async function main() {
   // console.log(queryDecklist);
   // console.log(queryDecklist.length);
 }
-
-
-main()

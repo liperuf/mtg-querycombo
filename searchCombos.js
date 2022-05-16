@@ -16,7 +16,7 @@ function searchCombos (combos, decklist, cardLimit = 3) {
   
   const results = combos.filter(combo => {
 
-    const comboCards = combo.filter((card, i) => i>0 && i<11 && card);
+    const comboCards = combo.filter((card, i) => i>0 && i<11 && card).map(card => card.trim());
 
     return (
       comboCards.length > 0 &&
