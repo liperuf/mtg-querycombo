@@ -91,7 +91,7 @@ bot.onText(/\/combomoxbeta (.+)/, (msg, match) => {
 
 			bot.sendMessage(
 				chatId, 
-				`${queryDecklist.length} combos found: \n${pretty}`,
+				`${moxfieldId} - ${quantity} \n ${queryDecklist.length} combos found: \n${pretty}`,
 				{ 
 					parse_mode: 'HTML',
 					disable_web_page_preview: true
