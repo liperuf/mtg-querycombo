@@ -70,6 +70,38 @@ bot.onText(/\/combomox (.+)/, (msg, match) => {
 	})
 })
 
+bot.onText(/\/combomoxbeta (.+)/, (msg, match) => {
+	const moxfieldId = match[1];
+	const quantity = match[2];
+	const chatId = msg.chat.id;
+
+	parseCommanderSpellbook().then(commanderSpellbookResponse => {
+		
+		parseMoxfield(moxfieldId).then(moxfieldResponse => {
+
+			const queryDecklist = searchCombos(
+				commanderSpellbookResponse,
+				moxfieldResponse,
+				quantity
+			)
+
+			const pretty = queryDecklist.reduce((acc, combo) => {
+				return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`
+			}, "")
+
+			bot.sendMessage(
+				chatId, 
+				`${queryDecklist.length} combos found: \n${pretty}`,
+				{ 
+					parse_mode: 'HTML',
+					disable_web_page_preview: true
+				}
+			)
+		
+		})
+	})
+})
+
 
 app.get('/moxfield/:moxfieldId', async (req, res) => {
   
