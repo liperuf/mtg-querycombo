@@ -71,8 +71,9 @@ bot.onText(/\/combomox (.+)/, (msg, match) => {
 })
 
 bot.onText(/\/combomoxbeta (.+)/, (msg, match) => {
-	const moxfieldId = match[1];
-	const quantity = match[2];
+
+	const moxfieldId = match[1].match(/^(.+) /)[0];
+	const quantity = match[1].match(/([0-9]*)$/)[0] || 3;
 	const chatId = msg.chat.id;
 
 	parseCommanderSpellbook().then(commanderSpellbookResponse => {
