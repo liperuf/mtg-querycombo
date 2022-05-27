@@ -27,30 +27,7 @@ app.all('*', function(req, res, next) {
      next();
 });
 
-bot.onText(/\/combomoxlegacy (.+)/, (msg, match) => {
-	const moxfieldId = match[1];
-	const chatId = msg.chat.id;
-
-	parseCommanderSpellbook().then(commanderSpellbookResponse => {
-		
-		parseMoxfield(moxfieldId).then(moxfieldResponse => {
-
-			const queryDecklist = searchCombos(
-				commanderSpellbookResponse,
-				moxfieldResponse
-			)
-
-			const pretty = queryDecklist.map(combo => combo.cards).reduce((acc, combo) => {
-				return `${acc} - ${combo.join(', ')} \n`
-			}, "")
-
-			bot.sendMessage(chatId, `${queryDecklist.length} combos found: \n${pretty}`)
-		
-		})
-	})
-})
-
-bot.onText(/\/combomox (.+)/, (msg, match) => {
+bot.onText(/\/__combomox (.+)/, (msg, match) => {
 	const moxfieldId = match[1];
 	const chatId = msg.chat.id;
 
@@ -157,18 +134,40 @@ bot.on('message', function onMessage(msg) {
   if(moxfieldRegex.test(msg.text)) {
 
   	const moxfieldId = msg.text.match(moxfieldRegex)[1];
+  	const chatId = msg.chat.id;
 
-  	console.log(`Hm, I see ${moxfieldId} mentioned here`);
+  	console.log(`Hm, I see ${moxfieldId} mentioned here.`);
+
+  	parseCommanderSpellbook().then(commanderSpellbookResponse => {
+		
+			parseMoxfield(moxfieldId).then(moxfieldResponse => {
+
+				const queryDecklist = searchCombos(
+					commanderSpellbookResponse,
+					moxfieldResponse
+				);
+
+				const pretty = queryDecklist.reduce((acc, combo) => {
+					return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`
+				}, "")
+
+				bot.sendMessage(
+					chatId, 
+					`${queryDecklist.length} combos found: \n${pretty}`,
+					{ 
+						parse_mode: 'HTML',
+						disable_web_page_preview: true
+					}
+				);
+			
+			})
+		})
 
   } else {
 
-  	console.log('none of my business')
+  	console.log('Webhook incoming. None of my business')
 
   }
-
-
-  // https://www.moxfield.com/decks/3NtuwTf0LEmGGoE7nOxBxg
-
 
 });
 
