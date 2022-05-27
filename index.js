@@ -151,6 +151,25 @@ bot.setWebHook(`${appURL}/bot${TELEGRAM_TOKEN}`);
 bot.on('message', function onMessage(msg) {
   // bot.sendMessage(msg.chat.id, 'I am alive on Heroku!');
   console.log('im alive!!! on webhook');
+
+  const moxfieldRegex = /moxfield.com\/decks\/(\w+)/;
+
+  if(moxfieldRegex.test(msg)) {
+
+  	const moxfieldId = msg.match(moxfieldRegex)[1];
+
+  	console.log(`Hm, I see ${moxfieldId} mentioned here`);
+
+  } else {
+
+  	console.log('none of my business')
+
+  }
+
+
+  // https://www.moxfield.com/decks/3NtuwTf0LEmGGoE7nOxBxg
+
+
 });
 
 
