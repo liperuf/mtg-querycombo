@@ -9,7 +9,7 @@ const app = express()
 const port = process.env.PORT || 3000;
 
 const telegramBotOptions = {
-  polling: true,
+  // polling: true,
   webHook: {
     port: process.env.PORT
   }
@@ -148,7 +148,6 @@ app.get('/moxpretty/:moxfieldId', async (req, res) => {
 
 bot.setWebHook(`${appURL}/bot${TELEGRAM_TOKEN}`);
 
-// Just to ping!
 bot.on('message', function onMessage(msg) {
   // bot.sendMessage(msg.chat.id, 'I am alive on Heroku!');
   console.log('im alive!!! on webhook');
