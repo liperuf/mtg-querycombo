@@ -9,7 +9,7 @@ const app = express()
 const port = process.env.PORT || 3000;
 
 const telegramBotOptions = {
-  // polling: true,
+  polling: true,
   webHook: {
     port: process.env.PORT
   }
