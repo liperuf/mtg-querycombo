@@ -145,7 +145,7 @@ app.get('/moxpretty/:moxfieldId', async (req, res) => {
 })
 
 
-bot.setWebHook(`${url}/bot${TOKEN}`);
+bot.setWebHook(`${appURL}/bot${TOKEN}`);
 
 // Just to ping!
 bot.on('message', function onMessage(msg) {
