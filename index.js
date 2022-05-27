@@ -14,8 +14,9 @@ const telegramBotOptions = {
     port: process.env.PORT
   }
 };
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const appURL = process.env.APP_URL || 'https://combomox.herokuapp.com:443';
-const bot = new telegramBot(process.env.TELEGRAM_TOKEN, telegramBotOptions);
+const bot = new telegramBot(TELEGRAM_TOKEN, telegramBotOptions);
 
 
 app.all('*', function(req, res, next) {
@@ -145,7 +146,7 @@ app.get('/moxpretty/:moxfieldId', async (req, res) => {
 })
 
 
-bot.setWebHook(`${appURL}/bot${TOKEN}`);
+bot.setWebHook(`${appURL}/bot${TELEGRAM_TOKEN}`);
 
 // Just to ping!
 bot.on('message', function onMessage(msg) {
