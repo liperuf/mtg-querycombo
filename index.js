@@ -144,7 +144,8 @@ bot.on('message', function onMessage(msg) {
 
 				const queryDecklist = searchCombos(
 					commanderSpellbookResponse,
-					moxfieldResponse
+					moxfieldResponse,
+					9
 				);
 
 				const pretty = queryDecklist.reduce((acc, combo) => {
