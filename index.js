@@ -154,9 +154,9 @@ bot.on('message', function onMessage(msg) {
 
   const moxfieldRegex = /moxfield.com\/decks\/(\w+)/;
 
-  if(moxfieldRegex.test(msg)) {
+  if(moxfieldRegex.test(msg.text)) {
 
-  	const moxfieldId = msg.match(moxfieldRegex)[1];
+  	const moxfieldId = msg.text.match(moxfieldRegex)[1];
 
   	console.log(`Hm, I see ${moxfieldId} mentioned here`);
 
