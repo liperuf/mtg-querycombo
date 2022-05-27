@@ -7,7 +7,16 @@ import searchCombos from './searchCombos.js';
 
 const app = express()
 const port = process.env.PORT || 3000;
-const bot = new telegramBot(process.env.TELEGRAM_TOKEN, { polling: true });
+
+const telegramBotOptions = {
+  polling: true,
+  webHook: {
+    port: process.env.PORT
+  }
+};
+const appURL = process.env.APP_URL || 'https://combomox.herokuapp.com:443';
+const bot = new telegramBot(process.env.TELEGRAM_TOKEN, telegramBotOptions);
+
 
 app.all('*', function(req, res, next) {
      var origin = req.get('origin'); 
@@ -134,6 +143,16 @@ app.get('/moxpretty/:moxfieldId', async (req, res) => {
 		})
 	})  
 })
+
+
+bot.setWebHook(`${url}/bot${TOKEN}`);
+
+// Just to ping!
+bot.on('message', function onMessage(msg) {
+  // bot.sendMessage(msg.chat.id, 'I am alive on Heroku!');
+  console.log('im alive!!! on webhook');
+});
+
 
 app.listen(port, () => {
   console.log(`Server is listening at port: ${port}`)
