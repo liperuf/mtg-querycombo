@@ -130,6 +130,7 @@ bot.on('message', function onMessage(msg) {
   console.log('im alive!!! on webhook');
 
   const moxfieldRegex = /moxfield.com\/decks\/(\w+)/;
+  const debugString = /debug/;
 
   if(moxfieldRegex.test(msg.text)) {
 
@@ -147,6 +148,16 @@ bot.on('message', function onMessage(msg) {
 					moxfieldResponse,
 					9
 				);
+
+				if(debugString.test(msg.text)) {
+					console.log('Moxfield Response ------------------------------------------------------')
+					console.log(moxfieldResponse)
+					console.log('------------------------------------------------------------------------')
+
+					console.log('Query Decklist ---------------------------------------------------------')
+					console.log(queryDecklist)
+					console.log('------------------------------------------------------------------------')
+				}
 
 				const pretty = queryDecklist.reduce((acc, combo) => {
 					return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`
