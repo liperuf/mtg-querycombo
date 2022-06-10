@@ -127,7 +127,7 @@ bot.setWebHook(`${appURL}/bot${TELEGRAM_TOKEN}`);
 
 bot.on('message', function onMessage(msg) {
   // bot.sendMessage(msg.chat.id, 'I am alive on Heroku!');
-  console.log('im alive!!! on webhook');
+  console.log('msg incoming.');
 
   const moxfieldRegex = /moxfield.com\/decks\/([\w\-]+)/;
   const debugString = /debug/;
@@ -137,7 +137,9 @@ bot.on('message', function onMessage(msg) {
   	const moxfieldId = msg.text.match(moxfieldRegex)[1];
   	const chatId = msg.chat.id;
 
-  	console.log(`Hm, I see ${moxfieldId} mentioned here.`);
+		if(debugString.test(msg.text)) {
+  		console.log(`Hm, I see ${moxfieldId} mentioned here.`);
+    }
 
   	parseCommanderSpellbook().then(commanderSpellbookResponse => {
 		
@@ -174,10 +176,6 @@ bot.on('message', function onMessage(msg) {
 			
 			})
 		})
-
-  } else {
-
-  	console.log('Webhook incoming. None of my business')
 
   }
 
