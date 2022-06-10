@@ -129,7 +129,7 @@ bot.on('message', function onMessage(msg) {
   // bot.sendMessage(msg.chat.id, 'I am alive on Heroku!');
   console.log('im alive!!! on webhook');
 
-  const moxfieldRegex = /moxfield.com\/decks\/(\w+)/;
+  const moxfieldRegex = /moxfield.com\/decks\/([\w\-]+)/;
   const debugString = /debug/;
 
   if(moxfieldRegex.test(msg.text)) {
