@@ -188,13 +188,13 @@ bot.on('message', function onMessage(msg) {
 			      return `${accj}  • <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.filter(card => card != addCard).join(', ')} \n`;
 			    }, "")
 
-			    return `${acc}"${addCard}" enables +${possibleCombos} combos:\n${comboList}`;
+			    return `${acc}${addCard} (+${possibleCombos})\n${comboList}`;
 
 			  },"");
 
 				bot.sendMessage(
 					chatId, 
-					`<b>${queryDecklist.length} combos found</b>\n${pretty}\n<b>${queryNearCombos.length} potential combos</b>\n${prettyNearCombos}`,
+					`<b>${queryDecklist.length} combos found</b>\n${pretty}\n<b>${queryNearCombos.length} potential combos if you add...</b>\n${prettyNearCombos}`,
 					{ 
 						parse_mode: 'HTML',
 						disable_web_page_preview: true
