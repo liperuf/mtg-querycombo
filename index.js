@@ -186,9 +186,9 @@ bot.on('message', function onMessage(msg) {
 			    const possibleCombos = arrAddCard[1].length;
 			    const comboList = arrAddCard[1].reduce((accj, combo) => {
 			      return `${accj}  • <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.filter(card => card != addCard).join(', ')} \n`;
-			    }, "  ")
+			    }, "")
 
-			    return `${acc}+${possibleCombos} w/ "${addCard}":\n${comboList}`;
+			    return `${acc}"${addCard}" enables +${possibleCombos} combos:\n${comboList}`;
 
 			  },"");
 
