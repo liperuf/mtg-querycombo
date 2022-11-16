@@ -13,9 +13,12 @@ export default async function parseMoxfield(decklistReference) {
   if(!response.commanders) return [];
   if(!response.companions) return [];
 
-  return [
-    ...Object.entries(response.mainboard).map(key => key[0]),
-    ...Object.entries(response.commanders).map(key => key[0]),
-    ...Object.entries(response.companions).map(key => key[0])
-  ];
+  return {
+    ci: response.main.color_identity || "C",
+    cards: [
+      ...Object.entries(response.mainboard).map(key => key[0]),
+      ...Object.entries(response.commanders).map(key => key[0]),
+      ...Object.entries(response.companions).map(key => key[0])
+    ]
+  }
 }

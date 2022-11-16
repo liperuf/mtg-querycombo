@@ -3,17 +3,54 @@ import { readFileSync } from 'fs';
 import parseMoxfield from './parseMoxfield.js';
 import parseCommanderSpellbook from './parseCommanderSpellbook.js';
 import searchCombos from './searchCombos.js';
+import searchNearCombos from './searchNearCombos.js';
+import comboObject from './comboObjectify.js';
 
 const decklistReference = process.argv.slice(2)[0]
 
 async function main() {
-  const queryDecklist = searchCombos(
-    await parseCommanderSpellbook(),
-    await parseMoxfield(decklistReference),
+
+  const spellbookCombos = await parseCommanderSpellbook();
+  const moxfieldDecklist = await parseMoxfield(decklistReference);
+
+  const queryNearCombos = searchNearCombos(
+    spellbookCombos,
+    moxfieldDecklist,
+    9
   )
 
-  console.log(queryDecklist);
-  console.log(queryDecklist.length);
+  const queryCombos = searchCombos(
+    spellbookCombos,
+    moxfieldDecklist,
+    9
+  )
+
+  const groupBy = function groupBy (xs, key) {
+    return xs.reduce(function(rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {});
+  };
+
+  const prettyNearCombos = Object.entries(groupBy(queryNearCombos, "addCard")).sort((a,b) => b[1].length - a[1].length).reduce((acc, arrAddCard) => {
+
+    const addCard = arrAddCard[0];
+    const possibleCombos = arrAddCard[1].length;
+    const comboList = arrAddCard[1].reduce((accj, combo) => {
+      return `${accj}• <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.filter(card => card != addCard).join(', ')} \n  `
+    }, "  ")
+
+
+    return `${acc}+${possibleCombos} if you add ${addCard}. You're already using:\n${comboList}\n`
+
+  },"")
+
+  const prettyCombos = queryCombos.reduce((acc, combo) => {
+    return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`
+  }, "")
+
+
+  console.log(`**${queryCombos.length} combos found**\n${prettyCombos}\n**${queryNearCombos.length} potential combos**\n${prettyNearCombos}`);
 }
 
 
