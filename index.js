@@ -192,9 +192,11 @@ bot.on('message', function onMessage(msg) {
 
 			  },"");
 
+			  const prettyResponse = `<b>${queryDecklist.length} combos found</b>\n${pretty}\n<b>${queryNearCombos.length} potential combos if you add...</b>\n${prettyNearCombos}`;
+
 				bot.sendMessage(
 					chatId, 
-					`<b>${queryDecklist.length} combos found</b>\n${pretty}\n<b>${queryNearCombos.length} potential combos if you add...</b>\n${prettyNearCombos}`,
+					prettyResponse.length < 4096? prettyResponse : `Whoa there cowboy! Telegram found too many combos and can't show them all. ${queryDecklist.length} combos and ${queryNearCombos.length} potential combos.`,
 					{ 
 						parse_mode: 'HTML',
 						disable_web_page_preview: true
