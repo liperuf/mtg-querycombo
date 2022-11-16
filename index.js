@@ -185,16 +185,16 @@ bot.on('message', function onMessage(msg) {
 			    const addCard = arrAddCard[0];
 			    const possibleCombos = arrAddCard[1].length;
 			    const comboList = arrAddCard[1].reduce((accj, combo) => {
-			      return `${accj}• <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.filter(card => card != addCard).join(', ')} \n  `
+			      return `${accj}• <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.filter(card => card != addCard).join(', ')} \n  `;
 			    }, "  ")
 
-			    return `${acc}+${possibleCombos} if you add ${addCard}. You're already using:\n${comboList}\n`
+			    return `${acc}+${possibleCombos} if you add ${addCard}. You're already using:\n${comboList}`;
 
 			  },"");
 
 				bot.sendMessage(
 					chatId, 
-					`**${queryDecklist.length} combos found**\n${pretty}\n**${queryNearCombos.length} potential combos**\n${prettyNearCombos}`,
+					`<b>${queryDecklist.length} combos found</b>\n${pretty}\n<b>${queryNearCombos.length} potential combos</b>\n${prettyNearCombos}`,
 					{ 
 						parse_mode: 'HTML',
 						disable_web_page_preview: true
