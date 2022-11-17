@@ -32,18 +32,26 @@ async function main() {
     }, {});
   };
 
-  const prettyNearCombos = Object.entries(groupBy(queryNearCombos, "addCard")).sort((a,b) => b[1].length - a[1].length).reduce((acc, arrAddCard) => {
+const prettyNearCombos = Object.entries(groupBy(queryNearCombos, "addCard")).sort((a,b) => b[1].length - a[1].length).reduce((acc, arrAddCard) => {
 
-    const addCard = arrAddCard[0];
-    const possibleCombos = arrAddCard[1].length;
-    const comboList = arrAddCard[1].reduce((accj, combo) => {
-      return `${accj}• <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.filter(card => card != addCard).join(', ')} \n  `
-    }, "  ")
+          const addCard = arrAddCard[0];
+          const possibleCombos = arrAddCard[1].length;
+          const comboList = arrAddCard[1].reduce((accj, combo) => {
 
+            const otherCardsList = combo.cards.filter(card => card != addCard);
 
-    return `${acc}+${possibleCombos} if you add ${addCard}. You're already using:\n${comboList}\n`
+            let output = "";
+            output += `${accj}`;
+            output += `  • <a href="https://commanderspellbook.com/combo/${combo.id}">${combo.id}</a> ${otherCardsList[0]}${otherCardsList.length > 1? ` and ${otherCardsList.length-1} more cards` : ``}\n`;
+            
+            return output;
+          
+          }, "")
 
-  },"")
+          return `${acc}${addCard} ${possibleCombos > 1? `+${possibleCombos}` : ``}\n${comboList}\n`;
+
+        },"");
+
 
   const prettyCombos = queryCombos.reduce((acc, combo) => {
     return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`

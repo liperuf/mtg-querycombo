@@ -170,7 +170,7 @@ bot.on('message', function onMessage(msg) {
 				}
 
 				const pretty = queryDecklist.reduce((acc, combo) => {
-					return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.join(', ')} \n`
+					return `${acc} - <a href="https://commanderspellbook.com/combo/${combo.id}">${combo.id}</a> ${combo.cards.join(', ')} \n`
 				}, "");
 
 			  const groupBy = function groupBy (xs, key) {
@@ -185,18 +185,41 @@ bot.on('message', function onMessage(msg) {
 			    const addCard = arrAddCard[0];
 			    const possibleCombos = arrAddCard[1].length;
 			    const comboList = arrAddCard[1].reduce((accj, combo) => {
-			      return `${accj}  • <a href="https://commanderspellbook.com/combo/${combo.id}/">${combo.id}</a> ${combo.cards.filter(card => card != addCard).join(', ')} \n`;
+
+			    	const otherCardsList = combo.cards.filter(card => card != addCard);
+
+			    	let output = "";
+			    	output += `${accj}`;
+			      output += `  • <a href="https://commanderspellbook.com/combo/${combo.id}">${combo.id}</a> ${otherCardsList[0]}${otherCardsList.length > 1? ` and ${otherCardsList.length-1} more cards` : ``}\n`;
+			      
+			      return output;
+			    
 			    }, "")
 
-			    return `${acc}${addCard} (+${possibleCombos})\n${comboList}`;
+			    return `${acc}${addCard} ${possibleCombos > 1? `+${possibleCombos}` : ``}\n${comboList}\n`;
 
 			  },"");
 
-			  const prettyResponse = `<b>${queryDecklist.length} combos found</b>\n${pretty}\n<b>${queryNearCombos.length} potential combos if you add...</b>\n${prettyNearCombos}`;
+			  let prettyResponse = "";
+			  prettyResponse += `You've searched combos for <a href="${moxfieldResponse.publicUrl}">${moxfieldResponse.name}</a>\n\n`;
+			  prettyResponse += queryDecklist.length>0? `<b>${queryDecklist.length} combos found</b>\n` : `This deck is <b>Combo Free!</b>\n`;
+			  prettyResponse += `${pretty}\n`;
+			  if(queryNearCombos.length > 0) {
+				  prettyResponse += `<b>${queryNearCombos.length} potential combos if you add...</b>\n\n`
+				  prettyResponse += `${prettyNearCombos}`;
+			  } else {
+			  	prettyResponse += `This decklist has potential combos 🙈`;
+			  }
+
+			  let shortResponse = ``;
+			  shortResponse += `You've searched combos for <a href="${moxfieldResponse.publicUrl}">${moxfieldResponse.name}</a>\n\n`;
+			  shortResponse += queryDecklist.length>0? `<b>${queryDecklist.length} combos found</b>\n` : `This deck is <b>Combo Free!</b>\n`;
+			  shortResponse += `${pretty}\n\n`;
+			  shortResponse += `Whoa there comboy 🤠\nTake it easy... You want me to diplay the other ${queryNearCombos.length} potential combos with this decklist? You gotta be kidding 🙊`;
 
 				bot.sendMessage(
 					chatId, 
-					prettyResponse.length < 4096? prettyResponse : `Whoa there cowboy! Telegram found too many combos and can't show them all. ${queryDecklist.length} combos and ${queryNearCombos.length} potential combos.`,
+					prettyResponse.length < 4096? prettyResponse : shortResponse.length < 4096? shortResponse : `${queryDecklist.length} combos and ${queryNearCombos.length} combos missing one card`,
 					{ 
 						parse_mode: 'HTML',
 						disable_web_page_preview: true

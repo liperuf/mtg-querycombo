@@ -14,6 +14,8 @@ export default async function parseMoxfield(decklistReference) {
   if(!response.companions) return [];
 
   return {
+    name: response.name || "Unknown Deck",
+    publicUrl: response.publicUrl || "",
     ci: response.main.color_identity || "C",
     cards: [
       ...Object.entries(response.mainboard).map(key => key[0]),
