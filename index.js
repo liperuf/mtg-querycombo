@@ -215,7 +215,7 @@ bot.on('message', function onMessage(msg) {
 			  shortResponse += `You've searched combos for <a href="${moxfieldResponse.publicUrl}">${moxfieldResponse.name}</a>\n\n`;
 			  shortResponse += queryDecklist.length>0? `<b>${queryDecklist.length} combos found</b>\n` : `This deck is <b>Combo Free!</b>\n`;
 			  shortResponse += `${pretty}\n\n`;
-			  shortResponse += `Whoa there comboy 🤠\nTake it easy... You want me to diplay the other ${queryNearCombos.length} potential combos with this decklist? You gotta be kidding 🙊`;
+			  shortResponse += `Whoa there comboy 🤠\nTake it easy... You want me to display the other ${queryNearCombos.length} potential combos with this decklist? You gotta be kidding me🙊`;
 
 				bot.sendMessage(
 					chatId, 
